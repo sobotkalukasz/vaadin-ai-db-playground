@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: vaadin-ai-db-playground
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/playground}
+    username: ${DATABASE_USERNAME:playground}
+    password: ${DATABASE_PASSWORD:playground}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+external-api:
+  base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8081}
+  importers:
+    first-endpoint:
+      enabled: true
+      path: /placeholder/first-endpoint
+      display-name: First endpoint
+openai:
+  api-key: ${OPENAI_API_KEY:}
