@@ -1,6 +1,50 @@
 package com.example.playground.importer;
-import com.example.playground.model.*; import com.example.playground.repository.ImportRunRepository; import java.util.*; import org.springframework.stereotype.Service;
-@Service public class ImportOrchestrator { private final Map<String,ExternalDataImporter> importers=new LinkedHashMap<>(); private final ImportRunRepository runs;
-public ImportOrchestrator(List<ExternalDataImporter> importers, ImportRunRepository runs){importers.forEach(i->this.importers.put(i.name(),i));this.runs=runs;}
-public Collection<ExternalDataImporter> availableImporters(){return importers.values();}
-public ImportResult run(ImportRequest request){ExternalDataImporter importer=Optional.ofNullable(importers.get(request.importerName())).orElseThrow(()->new IllegalArgumentException("Unknown importer")); ImportRun run=new ImportRun(importer.name()); runs.save(run); ImportResult result; try{result=importer.importData(request);}catch(Exception ex){result=new ImportResult(importer.name(),ImportStatus.FAILED,0,"Import failed. Check application logs for sanitized diagnostics.");} run.complete(result.status(),result.importedCount(),result.sanitizedMessage()); runs.save(run); return result;}}
+
+import com.example.playground.model.ImportRun;
+import com.example.playground.model.ImportStatus;
+import com.example.playground.repository.ImportRunRepository;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ImportOrchestrator {
+
+    private final Map<String, ExternalDataImporter> importers = new LinkedHashMap<>();
+    private final ImportRunRepository runs;
+
+    public ImportOrchestrator(List<ExternalDataImporter> importers, ImportRunRepository runs) {
+        importers.forEach(importer -> this.importers.put(importer.name(), importer));
+        this.runs = runs;
+    }
+
+    public Collection<ExternalDataImporter> availableImporters() {
+        return importers.values();
+    }
+
+    public ImportResult run(ImportRequest request) {
+        ExternalDataImporter importer = Optional.ofNullable(importers.get(request.importerName()))
+                .orElseThrow(() -> new IllegalArgumentException("Unknown importer"));
+
+        ImportRun run = new ImportRun(importer.name());
+        runs.save(run);
+
+        ImportResult result;
+        try {
+            result = importer.importData(request);
+        } catch (Exception ex) {
+            result = new ImportResult(
+                    importer.name(),
+                    ImportStatus.FAILED,
+                    0,
+                    "Import failed. Check application logs for sanitized diagnostics.");
+        }
+
+        run.complete(result.status(), result.importedCount(), result.sanitizedMessage());
+        runs.save(run);
+        return result;
+    }
+}

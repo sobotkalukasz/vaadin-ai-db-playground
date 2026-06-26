@@ -1,5 +1,69 @@
 package com.example.playground.model;
-import jakarta.persistence.*; import java.time.Instant;
-@Entity public class ImportedRecord { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; private String importerName; private String externalId; private String title; private Instant sourceUpdatedAt; @Column(columnDefinition="jsonb") private String rawPayload; private Instant importedAt = Instant.now();
-protected ImportedRecord(){} public ImportedRecord(String importerName,String externalId,String title,Instant sourceUpdatedAt,String rawPayload){this.importerName=importerName;this.externalId=externalId;this.title=title;this.sourceUpdatedAt=sourceUpdatedAt;this.rawPayload=rawPayload;}
-public Long getId(){return id;} public String getImporterName(){return importerName;} public String getExternalId(){return externalId;} public String getTitle(){return title;} public Instant getSourceUpdatedAt(){return sourceUpdatedAt;} public String getRawPayload(){return rawPayload;} public Instant getImportedAt(){return importedAt;}}
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.time.Instant;
+
+@Entity
+public class ImportedRecord {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String importerName;
+    private String externalId;
+    private String title;
+    private Instant sourceUpdatedAt;
+
+    @Column(columnDefinition = "jsonb")
+    private String rawPayload;
+
+    private Instant importedAt = Instant.now();
+
+    protected ImportedRecord() {}
+
+    public ImportedRecord(
+            String importerName,
+            String externalId,
+            String title,
+            Instant sourceUpdatedAt,
+            String rawPayload) {
+        this.importerName = importerName;
+        this.externalId = externalId;
+        this.title = title;
+        this.sourceUpdatedAt = sourceUpdatedAt;
+        this.rawPayload = rawPayload;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getImporterName() {
+        return importerName;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Instant getSourceUpdatedAt() {
+        return sourceUpdatedAt;
+    }
+
+    public String getRawPayload() {
+        return rawPayload;
+    }
+
+    public Instant getImportedAt() {
+        return importedAt;
+    }
+}
