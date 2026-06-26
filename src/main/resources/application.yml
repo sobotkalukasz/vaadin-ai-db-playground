@@ -15,7 +15,7 @@ external-api:
   base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8081}
   importers:
     first-endpoint:
-      enabled: true
+      enabled: false
       path: /placeholder/first-endpoint
       display-name: First endpoint
 openai:
