@@ -1,0 +1,1 @@
+{"name":"Vaadin AI DB Playground","image":"mcr.microsoft.com/devcontainers/java:25","features":{"ghcr.io/devcontainers/features/docker-in-docker:2":{}},"postCreateCommand":"chmod +x mvnw || true","forwardPorts":[8080,5432],"customizations":{"vscode":{"extensions":["vscjava.vscode-java-pack"]}}}
